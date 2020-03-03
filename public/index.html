@@ -12,11 +12,25 @@
 
         if ("geolocation" in navigator) {
             console.log('geolocation available!');
-            navigator.geolocation.getCurrentPosition(position => {
+            navigator.geolocation.getCurrentPosition(async position => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
                 document.getElementById('latitude').textContent = lat;
                 document.getElementById('longitude').textContent = lon;
+
+
+                const data = { lat, lon };
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                }
+               const response = await fetch('/api', options);
+               const json = await response.json();
+               console.log(json);
+
             });
         } else {
             console.log('geolocation not available!');
@@ -26,8 +40,8 @@
     <h1>Data weather app</h1>
 
     <p>
-    latitutde: <span id="latitude"></span>&deg;<br />
-    longitutde: <span id="longitude"></span>&deg;<br />
+        latitutde: <span id="latitude"></span>&deg;<br />
+        longitutde: <span id="longitude"></span>&deg;<br />
     </p>
 </body>
 
